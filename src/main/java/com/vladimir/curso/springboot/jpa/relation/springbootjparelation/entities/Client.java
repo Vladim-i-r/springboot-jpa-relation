@@ -20,7 +20,7 @@ public class Client {
 
     public Client() {
     }
-    
+
     public Client(Long id, String name, String lastname) {
         this.id = id;
         this.name = name;
@@ -44,5 +44,12 @@ public class Client {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
+    @Override
+    public String toString() {
+        return "{id=" + id + ", name=" + name + ", lastname=" + lastname + "}";
+    }
+
+    
 
 }
