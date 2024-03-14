@@ -21,11 +21,18 @@ public class Client {
     public Client() {
     }
 
+    public Client(String name, String lastname) {
+        this.name = name;
+        this.lastname = lastname;
+    }
+
     public Client(Long id, String name, String lastname) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
     }
+
+
     public Long getId() {
         return id;
     }
