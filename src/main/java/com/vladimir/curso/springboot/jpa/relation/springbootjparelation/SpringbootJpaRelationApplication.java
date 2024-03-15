@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vladimir.curso.springboot.jpa.relation.springbootjparelation.entities.Address;
 import com.vladimir.curso.springboot.jpa.relation.springbootjparelation.entities.Client;
+import com.vladimir.curso.springboot.jpa.relation.springbootjparelation.entities.ClientDetails;
 import com.vladimir.curso.springboot.jpa.relation.springbootjparelation.entities.Invoice;
+import com.vladimir.curso.springboot.jpa.relation.springbootjparelation.repositories.ClientDetailsRepository;
 import com.vladimir.curso.springboot.jpa.relation.springbootjparelation.repositories.ClientRepository;
 import com.vladimir.curso.springboot.jpa.relation.springbootjparelation.repositories.InvoiceRepository;
 
@@ -25,6 +27,9 @@ public class SpringbootJpaRelationApplication implements CommandLineRunner{
 
 	@Autowired
 	private InvoiceRepository invoiceRepository;
+
+	@Autowired
+	private ClientDetailsRepository clientDetailsRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootJpaRelationApplication.class, args);
@@ -41,7 +46,67 @@ public class SpringbootJpaRelationApplication implements CommandLineRunner{
 		//oneToManyInvoiceBidireccional();
 		// oneToManyInvoiceBidireccionalFindById();
 		//removeInvoiceBidireccionalFindById();
-		removeInvoiceBidireccional();
+		// removeInvoiceBidireccional();
+		//oneToOne();
+		// oneToOneBidireccional();
+		oneToOneBidireccionalFindById();
+	}
+
+	public void oneToOneBidireccionalFindById(){
+
+		Optional<Client> optClient = clientRepository.findOne(2L);
+		optClient.ifPresent(client -> {
+
+			ClientDetails clientDetails = new ClientDetails(true,5000);
+	
+			client.setClientDetails(clientDetails);
+			
+			clientRepository.save(client);
+	
+			System.out.println(client);
+		});
+
+	}
+
+	public void oneToOneBidireccional(){
+
+		Client client = new Client("Erba", "Pura");
+		ClientDetails clientDetails = new ClientDetails(true,5000);
+
+		client.setClientDetails(clientDetails);
+		
+		clientRepository.save(client);
+
+		System.out.println(client);
+
+	}
+
+	public void oneToOneById(){
+		ClientDetails clientDetails = new ClientDetails(true,5000);
+		clientDetailsRepository.save(clientDetails);
+
+		Optional<Client> optClient = clientRepository.findOne(2L);  //Para que no de error con el lazily con findbyid
+		optClient.ifPresent(client -> {
+			
+			client.setClientDetails(clientDetails);
+			clientRepository.save(client);
+	
+			System.out.println(client);
+		});
+
+	}
+
+
+	public void oneToOne(){
+		ClientDetails clientDetails = new ClientDetails(true,5000);
+		clientDetailsRepository.save(clientDetails);
+
+		Client client = new Client("Erba", "Pura");
+		client.setClientDetails(clientDetails);
+		clientRepository.save(client);
+
+		System.out.println(client);
+
 	}
 
 	@Transactional
